@@ -21,11 +21,14 @@ const userschema = new mongoose.Schema({
   dob: {
     type: Date,
     required: true,
-    //     validate(value){
-    //         if(!validator.isDate(value)){
-    //             throw new error("Invalid Date");
-    //         }
-    //  },
+    validate(value) {
+      if (!validator.isDate(value)) {
+        throw new Error("Invalid Date");
+      }
+      // if(!Date.parse(value)){
+      //   throw new Error
+      // }
+    },
   },
   password: {
     type: String,
@@ -52,7 +55,7 @@ const userschema = new mongoose.Schema({
       type: Number,
     },
     date: {
-      type: String,
+      type: Date,
     },
   },
 });

@@ -114,7 +114,9 @@ app.post("/module1/score", async (req, res) => {
     var data = req.body;
     var token = req.cookies.BuildCommunication;
     var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    // console.log(user_id);
     var user = await User.findById(user_id._id);
+
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module1: {
         previous: user.module1.score,
