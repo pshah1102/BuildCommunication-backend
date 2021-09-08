@@ -17,6 +17,10 @@ app.use(function (req, res, next) {
 app.use(express.json());
 app.use(cookieParser());
 
+// for images
+app.use('/images',express.static('images'));
+
+
 app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
