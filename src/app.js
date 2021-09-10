@@ -124,7 +124,7 @@ app.post("/module1/score", async (req, res) => {
 
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module1: {
-        previous: user.module1.score,
+        previous: user.module1 ? user.module1.score:0,
         score: data.score,
         date: data.date,
       },
@@ -179,7 +179,7 @@ app.post("/module2/score", async (req, res) => {
 
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module2: {
-        previous: user.module2.score,
+        previous: user.module2 ? user.module2.score:0,
         score: data.score,
         date: data.date,
       },
