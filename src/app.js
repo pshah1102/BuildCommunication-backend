@@ -1,8 +1,9 @@
 const express = require("express");
 require("./db/conn");
 const User = require("./models/users");
-const module2=require("./models/module2")
+const module2 = require("./models/module2");
 const module1 = require("./models/module");
+const GeneratePDF = require("./pdf/pdf-generator");
 var cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const app = express();
@@ -19,8 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // for images
-app.use('/images',express.static('images'));
-
+app.use("/images", express.static("images"));
 
 app.get("/", (req, res) => {
   res.send("Hello from backend");
@@ -43,7 +43,11 @@ app.post("/user/signup", async (req, res) => {
       httpOnly: true,
       // secure:true only for https access
     });
-    res.status(201).send(req.body);
+    const userData = {
+      user: await User.findOne({ email: req.body.email }),
+      token: token,
+    };
+    res.status(201).send(userData);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
@@ -72,7 +76,11 @@ app.post("/user/login", async (req, res) => {
     console.log("token part is" + token);
 
     if (ismatch) {
-      res.status(201).send("login successful");
+      const userData = {
+        user: usermail,
+        token: token,
+      };
+      res.status(201).send(userData);
     } else {
       res.status(400).send("password not matching");
     }
@@ -91,8 +99,9 @@ app.post("/module1/add", async (req, res) => {
       options: req.body.options,
       answer: req.body.answer,
     });
-    console.log("module data is :" + moduledata);
+    // console.log("module data is :" + moduledata);
     const registered = await moduledata.save();
+    console.log(registered);
     res.status(201).send(req.body);
   } catch (error) {
     res.status(400).send(error);
@@ -124,7 +133,7 @@ app.post("/module1/score", async (req, res) => {
 
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module1: {
-        previous: user.module1 ? user.module1.score:0,
+        previous: user.module1 ? user.module1.score : 0,
         score: data.score,
         date: data.date,
       },
@@ -137,7 +146,6 @@ app.post("/module1/score", async (req, res) => {
   }
 });
 
-
 //apis for module 2
 app.post("/module2/add", async (req, res) => {
   try {
@@ -146,7 +154,7 @@ app.post("/module2/add", async (req, res) => {
       question: req.body.question,
       options: req.body.options,
       answer: req.body.answer,
-      image:req.body.image,
+      image: req.body.image,
     });
     console.log("module data is :" + moduledata);
     const registered = await moduledata.save();
@@ -167,7 +175,6 @@ app.get("/module2/get", async (req, res) => {
   }
 });
 
-
 // set score of module 2
 app.post("/module2/score", async (req, res) => {
   try {
@@ -179,13 +186,31 @@ app.post("/module2/score", async (req, res) => {
 
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module2: {
-        previous: user.module2 ? user.module2.score:0,
+        previous: user.module2 ? user.module2.score : 0,
         score: data.score,
         date: data.date,
       },
     });
 
     res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// generate pdf
+app.get("/user/pdf", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    GeneratePDF(user);
+
+    res.status(201).send("PDF Generated");
   } catch (err) {
     console.log(err);
     res.status(400).send(err);
