@@ -1,5 +1,6 @@
 const express = require("express");
 require("./db/conn");
+require("./mail/mail");
 const User = require("./models/users");
 const module2 = require("./models/module2");
 const module1 = require("./models/module");

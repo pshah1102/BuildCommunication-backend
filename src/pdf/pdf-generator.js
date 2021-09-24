@@ -10,7 +10,7 @@ const doc = new PDFDocument();
 
 // Pipe the PDF into a patient's file
 const GeneratePDF = (userData) => {
-  doc.pipe(fs.createWriteStream(userData._id + "student-report.pdf"));
+  doc.pipe(fs.createWriteStream(userData._id + ".pdf"));
 
   // Add the header - https://pspdfkit.com/blog/2019/generate-invoices-pdfkit-node/
   doc
