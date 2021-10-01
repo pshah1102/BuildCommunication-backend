@@ -201,19 +201,18 @@ app.post("/module2/score", async (req, res) => {
   }
 });
 
-
-//api's for module 3 
+//api's for module 3
 app.post("/module3/add", async (req, res) => {
   try {
     console.log(req.body);
     const moduledata = new module3({
-      options: req.body.options,
+      question: req.body.question,
       answer: req.body.answer,
       image: req.body.image,
     });
     console.log("module data is :" + moduledata);
     const registered = await moduledata.save();
-    res.status(201).send(req.body);
+    res.status(201).send(registered);
   } catch (error) {
     res.status(400).send(error);
   }
@@ -241,7 +240,7 @@ app.post("/module3/score", async (req, res) => {
 
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module3: {
-        previous: user.module3 ? user.module3.score : 0,
+        previous: user.module3.score ? user.module3.score : 0,
         score: data.score,
         date: data.date,
       },
@@ -253,7 +252,6 @@ app.post("/module3/score", async (req, res) => {
     res.status(400).send(err);
   }
 });
-
 
 // generate pdf
 app.get("/user/pdf", async (req, res) => {
