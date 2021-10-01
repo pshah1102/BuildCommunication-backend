@@ -4,6 +4,7 @@ require("./mail/mail");
 const User = require("./models/users");
 const module2 = require("./models/module2");
 const module1 = require("./models/module");
+const module3 = require("./models/module3");
 const GeneratePDF = require("./pdf/pdf-generator");
 var cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
@@ -199,6 +200,60 @@ app.post("/module2/score", async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+
+//api's for module 3 
+app.post("/module3/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const moduledata = new module3({
+      options: req.body.options,
+      answer: req.body.answer,
+      image: req.body.image,
+    });
+    console.log("module data is :" + moduledata);
+    const registered = await moduledata.save();
+    res.status(201).send(req.body);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+//to retrieve questions from database
+app.get("/module3/get", async (req, res) => {
+  try {
+    var alldata = await module3.find({});
+    console.log("Question: " + alldata);
+    res.status(201).send(alldata);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// set score of module 3
+app.post("/module3/score", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    var userData = await User.findByIdAndUpdate(user_id._id, {
+      module3: {
+        previous: user.module3 ? user.module3.score : 0,
+        score: data.score,
+        date: data.date,
+      },
+    });
+
+    res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
 
 // generate pdf
 app.get("/user/pdf", async (req, res) => {

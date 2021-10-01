@@ -69,6 +69,18 @@ const userschema = new mongoose.Schema({
       type: Date,
     },
   },
+
+  module3: {
+    score: {
+      type: Number,
+    },
+    previous: {
+      type: Number,
+    },
+    date: {
+      type: Date,
+    },
+  },
 });
 
 //schema for questions
