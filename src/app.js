@@ -28,6 +28,17 @@ app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
 
+// get user details
+app.get("/user", async (req, res) => {
+  try {
+    console.log(req.query.id);
+    var user = await User.findById(req.query.id);
+    res.status(201).send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
 app.post("/user/signup", async (req, res) => {
   try {
     console.log(req.body);
