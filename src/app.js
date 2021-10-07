@@ -103,6 +103,25 @@ app.post("/user/login", async (req, res) => {
   }
 });
 
+// api for logout
+app.get("/user/logout", async (req, res) => {
+  try {
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+    user.tokens = user.tokens.filter((currToken) => {
+      return currToken.token !== token;
+    });
+    res.clearCookie("BuildCommunication");
+    await user.save();
+    res.status(202).send("Successfully logged out");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
 //api for receivinf and sending questions
 app.post("/module1/add", async (req, res) => {
   try {
