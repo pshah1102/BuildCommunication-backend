@@ -83,30 +83,10 @@ const userschema = new mongoose.Schema({
   },
 });
 
-//schema for questions
-// const questionschema=new mongoose.Schema({
-//      question:
-//      {type:String
-//     },
-
-//      options:[{
-//        option: {
-//             type:String,
-//             required:true,
-//         }
-//     }],
-//     answer:{
-//         type:int
-//     }
-// });
-
 //generate tokens
 userschema.methods.generatetoken = async function () {
   try {
-    const token = jwt.sign(
-      { _id: this._id },
-      "ournameis19it133and19it092project"
-    );
+    const token = jwt.sign({ _id: this._id }, process.env.SECRET_KEY);
     // console.log("jwt token sign"+token)
     this.tokens = this.tokens.concat({ token });
     await this.save();

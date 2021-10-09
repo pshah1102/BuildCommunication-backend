@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 require("./db/conn");
 require("./mail/mail");
@@ -107,7 +108,7 @@ app.post("/user/login", async (req, res) => {
 app.get("/user/logout", async (req, res) => {
   try {
     var token = req.cookies.BuildCommunication;
-    var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
     // console.log(user_id);
     var user = await User.findById(user_id._id);
     user.tokens = user.tokens.filter((currToken) => {
@@ -115,7 +116,7 @@ app.get("/user/logout", async (req, res) => {
     });
     res.clearCookie("BuildCommunication");
     await user.save();
-    res.status(202).send("Successfully logged out");
+    res.status(200).send("Successfully logged out");
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
@@ -159,7 +160,7 @@ app.post("/module1/score", async (req, res) => {
   try {
     var data = req.body;
     var token = req.cookies.BuildCommunication;
-    var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
     // console.log(user_id);
     var user = await User.findById(user_id._id);
 
@@ -212,7 +213,7 @@ app.post("/module2/score", async (req, res) => {
   try {
     var data = req.body;
     var token = req.cookies.BuildCommunication;
-    var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
     // console.log(user_id);
     var user = await User.findById(user_id._id);
 
@@ -264,7 +265,7 @@ app.post("/module3/score", async (req, res) => {
   try {
     var data = req.body;
     var token = req.cookies.BuildCommunication;
-    var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
     // console.log(user_id);
     var user = await User.findById(user_id._id);
 
@@ -288,7 +289,7 @@ app.get("/user/pdf", async (req, res) => {
   try {
     var data = req.body;
     var token = req.cookies.BuildCommunication;
-    var user_id = await jwt.verify(token, "ournameis19it133and19it092project");
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
     // console.log(user_id);
     var user = await User.findById(user_id._id);
 
