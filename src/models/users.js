@@ -47,6 +47,9 @@ const userschema = new mongoose.Schema({
       },
     },
   ],
+  speech_rate: {
+    type: String,
+  },
   module1: {
     score: {
       type: Number,
@@ -71,6 +74,18 @@ const userschema = new mongoose.Schema({
   },
 
   module3: {
+    score: {
+      type: Number,
+    },
+    previous: {
+      type: Number,
+    },
+    date: {
+      type: Date,
+    },
+  },
+
+  module4: {
     score: {
       type: Number,
     },

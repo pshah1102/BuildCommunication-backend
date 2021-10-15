@@ -6,6 +6,7 @@ const User = require("./models/users");
 const module2 = require("./models/module2");
 const module1 = require("./models/module");
 const module3 = require("./models/module3");
+const module4 = require("./models/module4");
 const GeneratePDF = require("./pdf/pdf-generator");
 var cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
@@ -34,6 +35,21 @@ app.get("/user", async (req, res) => {
   try {
     console.log(req.query.id);
     var user = await User.findById(req.query.id);
+    res.status(201).send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+app.post("/user/update", async (req, res) => {
+  try {
+    console.log(req.body);
+    var userData = await User.findByIdAndUpdate(req.body._id, {
+      name: req.body.name,
+      dob: req.body.dob,
+      speech_rate: req.body.speech_rate,
+    });
+    var user = await User.findById(req.body._id);
     res.status(201).send(user);
   } catch (error) {
     console.log(error);
@@ -272,6 +288,61 @@ app.post("/module3/score", async (req, res) => {
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module3: {
         previous: user.module3.score ? user.module3.score : 0,
+        score: data.score,
+        date: data.date,
+      },
+    });
+
+    res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// api for module 4
+app.post("/module4/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const moduledata = new module4({
+      comprehension: req.body.comprehension,
+      questions: req.body.questions,
+    });
+    // console.log("module data is :" + moduledata);
+    const registered = await moduledata.save();
+    console.log(registered);
+    res.status(201).send(req.body);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+//to retrieve questions from database
+app.get("/module4/get", async (req, res) => {
+  try {
+    var alldata = await module4.find({});
+    console.log("Question: " + alldata);
+    //    var odata=await module1.findOne({options:options});
+    //    var adata=await module1.findOne({answer:answer});
+    res.status(201).send(alldata);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+// end of apis for new collection
+
+// set score of module 1
+app.post("/module4/score", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    var userData = await User.findByIdAndUpdate(user_id._id, {
+      module4: {
+        previous: user.module4 ? user.module4.score : 0,
         score: data.score,
         date: data.date,
       },
