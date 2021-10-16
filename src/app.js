@@ -44,12 +44,12 @@ app.get("/user", async (req, res) => {
 app.post("/user/update", async (req, res) => {
   try {
     console.log(req.body);
-    var userData = await User.findByIdAndUpdate(req.body._id, {
+    var userData = await User.findByIdAndUpdate(req.body.id, {
       name: req.body.name,
       dob: req.body.dob,
       speech_rate: req.body.speech_rate,
     });
-    var user = await User.findById(req.body._id);
+    var user = await User.findById(req.body.id);
     res.status(201).send(user);
   } catch (error) {
     console.log(error);
@@ -65,10 +65,10 @@ app.post("/user/signup", async (req, res) => {
       email: req.body.email,
       dob: req.body.dob,
       password: req.body.password,
-      module1:{previous:0, score:0},
-      module2:{previous:0, score:0},
-      module3:{previous:0, score:0},
-      module4:{previous:0, score:0},
+      module1: { previous: 0, score: 0 },
+      module2: { previous: 0, score: 0 },
+      module3: { previous: 0, score: 0 },
+      module4: { previous: 0, score: 0 },
     });
     const token = await data.generatetoken();
     const registered = await data.save();
@@ -131,7 +131,7 @@ app.get("/user/logout", async (req, res) => {
     var user_id = await jwt.verify(token, process.env.SECRET_KEY);
     console.log(user_id);
     var user = await User.findById(user_id._id);
-    console.log(user)
+    console.log(user);
     user.tokens = user.tokens.filter((currToken) => {
       return currToken.token !== token;
     });
@@ -187,7 +187,8 @@ app.post("/module1/score", async (req, res) => {
 
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module1: {
-        previous: user && user.module1 && user.module1.score ? user.module1.score : 0,
+        previous:
+          user && user.module1 && user.module1.score ? user.module1.score : 0,
         score: data.score,
         date: data.date,
       },
