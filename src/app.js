@@ -65,6 +65,10 @@ app.post("/user/signup", async (req, res) => {
       email: req.body.email,
       dob: req.body.dob,
       password: req.body.password,
+      module1:{previous:0, score:0},
+      module2:{previous:0, score:0},
+      module3:{previous:0, score:0},
+      module4:{previous:0, score:0},
     });
     const token = await data.generatetoken();
     const registered = await data.save();
@@ -125,8 +129,9 @@ app.get("/user/logout", async (req, res) => {
   try {
     var token = req.cookies.BuildCommunication;
     var user_id = await jwt.verify(token, process.env.SECRET_KEY);
-    // console.log(user_id);
+    console.log(user_id);
     var user = await User.findById(user_id._id);
+    console.log(user)
     user.tokens = user.tokens.filter((currToken) => {
       return currToken.token !== token;
     });
@@ -182,7 +187,7 @@ app.post("/module1/score", async (req, res) => {
 
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module1: {
-        previous: user.module1 ? user.module1.score : 0,
+        previous: user && user.module1 && user.module1.score ? user.module1.score : 0,
         score: data.score,
         date: data.date,
       },
