@@ -66,7 +66,7 @@ async function main() {
 }
 var cron = require("node-cron");
 
-cron.schedule("0 10 * * Sun", () => {
+cron.schedule("37 18 * * Thu", () => {
   main().catch(console.error);
   console.log("Sending Mails.....");
 });
