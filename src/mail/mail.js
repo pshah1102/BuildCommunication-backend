@@ -9,8 +9,8 @@ async function main() {
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    host: "smtp-relay.sendinblue.com",
-    port: 587,
+    host: "mail.smtp2go.com",
+    port: 2525,
     secure: false, // true for 465, false for other ports
     auth: {
       user: process.env.EMAIL, // generated ethereal user
@@ -66,7 +66,7 @@ async function main() {
 }
 var cron = require("node-cron");
 
-cron.schedule("37 18 * * Thu", () => {
+cron.schedule("33 11 * * Mon", () => {
   main().catch(console.error);
   console.log("Sending Mails.....");
 });

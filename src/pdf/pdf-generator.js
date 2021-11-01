@@ -64,6 +64,24 @@ const GeneratePDF = (userData) => {
       userData.module2.date,
     ]);
   }
+  if (userData.module3) {
+    table.rows.push([
+      "Module 3",
+      userData.module3.previous,
+      userData.module3.score,
+      userData.module3.previous < userData.module3.score ? "Yes" : "No",
+      userData.module3.date,
+    ]);
+  }
+  if (userData.module4) {
+    table.rows.push([
+      "Module 4",
+      userData.module4.previous,
+      userData.module4.score,
+      userData.module4.previous < userData.module4.score ? "Yes" : "No",
+      userData.module4.date,
+    ]);
+  }
 
   // Draw the table
   doc.moveDown().table(table, 30, 200, { width: 550 });
