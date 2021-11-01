@@ -74,7 +74,7 @@ app.post("/user/signup", async (req, res) => {
     const registered = await data.save();
     res.cookie("BuildCommunication", token, {
       expires: new Date(Date.now() + 86400000),
-      httpOnly: true,
+      httpOnly: false,
       // secure:true only for https access
     });
     const userData = {

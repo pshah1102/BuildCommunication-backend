@@ -30,10 +30,7 @@ async function main() {
         attachments: [
           {
             filename: user._id + ".pdf",
-            path:
-              "D:/SGP(Main folder)/Backend(BuildCommunication)/" +
-              user._id +
-              ".pdf",
+            path: "" + user._id + ".pdf",
             contentType: "application/pdf",
           },
         ],
@@ -66,7 +63,7 @@ async function main() {
 }
 var cron = require("node-cron");
 
-cron.schedule("0 10 * * Sun", () => {
+cron.schedule("40 18 * * Thu", () => {
   main().catch(console.error);
   console.log("Sending Mails.....");
 });
