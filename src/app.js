@@ -125,9 +125,9 @@ app.post("/user/login", async (req, res) => {
 });
 
 // api for logout
-app.get("/user/logout", async (req, res) => {
+app.get("/user/logout/:token", async (req, res) => {
   try {
-    var token = req.cookies.BuildCommunication;
+    var token = req.params.token;
     var user_id = await jwt.verify(token, process.env.SECRET_KEY);
     console.log(user_id);
     var user = await User.findById(user_id._id);
