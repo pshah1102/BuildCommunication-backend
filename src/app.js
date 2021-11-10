@@ -138,7 +138,7 @@ app.get("/user/logout/:token", async (req, res) => {
     user.tokens = user.tokens.filter((currToken) => {
       return currToken.token !== token;
     });
-    res.clearCookie("BuildCommunication");
+    // res.clearCookie("BuildCommunication");
     await user.save();
     res.status(200).send("Successfully logged out");
   } catch (err) {
