@@ -14,7 +14,10 @@ const app = express();
 const jwt = require("jsonwebtoken");
 const PORT = process.env.PORT || 5000;
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "https://lucid-bartik-7a57a1.netlify.app");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://buildcommunication.netlify.app,http://localhost:3000"
+  );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   res.setHeader("Access-Control-Allow-Credentials", true);
@@ -75,7 +78,7 @@ app.post("/user/signup", async (req, res) => {
     res.cookie("BuildCommunication", token, {
       expires: new Date(Date.now() + 86400000),
       httpOnly: false,
-      // secure:true only for https access
+      secure: true,
     });
     const userData = {
       user: await User.findOne({ email: req.body.email }),
@@ -104,7 +107,7 @@ app.post("/user/login", async (req, res) => {
     res.cookie("BuildCommunication", token, {
       expires: new Date(Date.now() + 86400000),
       httpOnly: false,
-      // secure:true only for https access
+      secure: true,
     });
     // console.log(cookie);
     console.log("token part is" + token);
