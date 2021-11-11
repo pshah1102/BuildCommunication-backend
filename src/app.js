@@ -40,7 +40,7 @@ app.get("/user", async (req, res) => {
   try {
     console.log(req.query.id);
     var user = await User.findById(req.query.id);
-    res.status(201).send(user);
+    res.status(200).send(user);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
