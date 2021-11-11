@@ -35,7 +35,7 @@ const PORT = process.env.PORT || 5000;
 //   next();
 // });
 var corsOptions = {
-  origin: "http://localhost:3000", //frontend url
+  origin: "https://buildcommunication.netlify.app", //frontend url
   credentials: true,
 };
 
