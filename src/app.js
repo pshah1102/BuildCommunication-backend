@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+var cors = require("cors");
 require("./db/conn");
 require("./mail/mail");
 const User = require("./models/users");
@@ -20,19 +21,25 @@ const app = express();
 const jwt = require("jsonwebtoken");
 const PORT = process.env.PORT || 5000;
 
-app.use(function (req, res, next) {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://buildcommunication.netlify.app"
-  );
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     "https://buildcommunication.netlify.app"
+//   );
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   res.setHeader("Access-Control-Allow-Credentials", true);
+//   next();
+// });
+var corsOptions = {
+  origin: "http://localhost:3000", //frontend url
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -41,7 +48,6 @@ app.use("/images", express.static("images"));
 
 app.get("/", (req, res) => {
   res.send(res.cookie.BuildCommunication);
-  console.log(res.cookie.BuildCommunication);
 });
 
 // get user details
