@@ -5,6 +5,9 @@ require("./mail/mail");
 const User = require("./models/users");
 const module2 = require("./models/module2");
 const module1 = require("./models/module");
+const chwords = require("./models/ch_words");
+const thwords = require("./models/th_words");
+const ingwords = require("./models/ing_words");
 const module3 = require("./models/module3");
 const module4 = require("./models/module4");
 const GeneratePDF = require("./pdf/pdf-generator");
@@ -192,6 +195,173 @@ app.post("/module1/score", async (req, res) => {
       module1: {
         previous:
           user && user.module1 && user.module1.score ? user.module1.score : 0,
+        score: data.score,
+        date: data.date,
+      },
+    });
+
+    res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// ch words type 1
+app.post("/chwords/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const moduledata = new chwords({
+      question: req.body.question,
+      options: req.body.options,
+      answer: req.body.answer,
+    });
+    // console.log("module data is :" + moduledata);
+    const registered = await moduledata.save();
+    console.log(registered);
+    res.status(201).send(req.body);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.get("/chwords/get", async (req, res) => {
+  try {
+    var alldata = await chwords.find({});
+    console.log("Question: " + alldata);
+    //    var odata=await module1.findOne({options:options});
+    //    var adata=await module1.findOne({answer:answer});
+    res.status(201).send(alldata);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// set score of ch words
+app.post("/chwords/score", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    var userData = await User.findByIdAndUpdate(user_id._id, {
+      chwords: {
+        previous:
+          user && user.chwords && user.chwords.score ? user.chwords.score : 0,
+        score: data.score,
+        date: data.date,
+      },
+    });
+
+    res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// th words type 1
+app.post("/thwords/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const moduledata = new thwords({
+      question: req.body.question,
+      options: req.body.options,
+      answer: req.body.answer,
+    });
+    // console.log("module data is :" + moduledata);
+    const registered = await moduledata.save();
+    console.log(registered);
+    res.status(201).send(req.body);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.get("/thwords/get", async (req, res) => {
+  try {
+    var alldata = await thwords.find({});
+    console.log("Question: " + alldata);
+    //    var odata=await module1.findOne({options:options});
+    //    var adata=await module1.findOne({answer:answer});
+    res.status(201).send(alldata);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// set score of ch words
+app.post("/thwords/score", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    var userData = await User.findByIdAndUpdate(user_id._id, {
+      thwords: {
+        previous:
+          user && user.thwords && user.thwords.score ? user.thwords.score : 0,
+        score: data.score,
+        date: data.date,
+      },
+    });
+
+    res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// ing words type 1
+app.post("/ingwords/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const moduledata = new ingwords({
+      question: req.body.question,
+      options: req.body.options,
+      answer: req.body.answer,
+    });
+    // console.log("module data is :" + moduledata);
+    const registered = await moduledata.save();
+    console.log(registered);
+    res.status(201).send(req.body);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.get("/ingwords/get", async (req, res) => {
+  try {
+    var alldata = await ingwords.find({});
+    console.log("Question: " + alldata);
+    //    var odata=await module1.findOne({options:options});
+    //    var adata=await module1.findOne({answer:answer});
+    res.status(201).send(alldata);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// set score of ch words
+app.post("/ingwords/score", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    var userData = await User.findByIdAndUpdate(user_id._id, {
+      ingwords: {
+        previous:
+          user && user.ingwords && user.ingwords.score
+            ? user.ingwords.score
+            : 0,
         score: data.score,
         date: data.date,
       },

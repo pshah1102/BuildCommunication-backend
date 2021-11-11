@@ -61,6 +61,39 @@ const userschema = new mongoose.Schema({
       type: Date,
     },
   },
+  chwords: {
+    score: {
+      type: Number,
+    },
+    previous: {
+      type: Number,
+    },
+    date: {
+      type: Date,
+    },
+  },
+  thwords: {
+    score: {
+      type: Number,
+    },
+    previous: {
+      type: Number,
+    },
+    date: {
+      type: Date,
+    },
+  },
+  ingwords: {
+    score: {
+      type: Number,
+    },
+    previous: {
+      type: Number,
+    },
+    date: {
+      type: Date,
+    },
+  },
   module2: {
     score: {
       type: Number,
