@@ -8,6 +8,9 @@ const module1 = require("./models/module");
 const chwords = require("./models/ch_words");
 const thwords = require("./models/th_words");
 const ingwords = require("./models/ing_words");
+const chwordsi = require("./models/ch_words_i");
+const thwordsi = require("./models/th_words_i");
+const ingwordsi = require("./models/ing_words_i");
 const module3 = require("./models/module3");
 const module4 = require("./models/module4");
 const GeneratePDF = require("./pdf/pdf-generator");
@@ -355,6 +358,159 @@ app.post("/module2/score", async (req, res) => {
     var userData = await User.findByIdAndUpdate(user_id._id, {
       module2: {
         previous: user.module2 ? user.module2.score : 0,
+        score: data.score,
+        date: data.date,
+      },
+    });
+
+    res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// ch words typ 2
+app.post("/chwordsi/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const moduledata = new chwordsi({
+      question: req.body.question,
+      options: req.body.options,
+      answer: req.body.answer,
+      image: req.body.image,
+    });
+    console.log("module data is :" + moduledata);
+    const registered = await moduledata.save();
+    res.status(201).send(req.body);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.get("/chwordsi/get", async (req, res) => {
+  try {
+    var alldata = await chwordsi.find({});
+    console.log("Question: " + alldata);
+    res.status(201).send(alldata);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.post("/chwordsi/score", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    var userData = await User.findByIdAndUpdate(user_id._id, {
+      chwordsi: {
+        previous: user.chwordsi ? user.chwordsi.score : 0,
+        score: data.score,
+        date: data.date,
+      },
+    });
+
+    res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// th words typ 2
+app.post("/thwordsi/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const moduledata = new thwordsi({
+      question: req.body.question,
+      options: req.body.options,
+      answer: req.body.answer,
+      image: req.body.image,
+    });
+    console.log("module data is :" + moduledata);
+    const registered = await moduledata.save();
+    res.status(201).send(req.body);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.get("/thwordsi/get", async (req, res) => {
+  try {
+    var alldata = await thwordsi.find({});
+    console.log("Question: " + alldata);
+    res.status(201).send(alldata);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.post("/thwordsi/score", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    var userData = await User.findByIdAndUpdate(user_id._id, {
+      thwordsi: {
+        previous: user.thwordsi ? user.thwordsi.score : 0,
+        score: data.score,
+        date: data.date,
+      },
+    });
+
+    res.status(201).send(userData);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// ing words typ 2
+app.post("/ingwordsi/add", async (req, res) => {
+  try {
+    console.log(req.body);
+    const moduledata = new ingwordsi({
+      question: req.body.question,
+      options: req.body.options,
+      answer: req.body.answer,
+      image: req.body.image,
+    });
+    console.log("module data is :" + moduledata);
+    const registered = await moduledata.save();
+    res.status(201).send(req.body);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.get("/ingwordsi/get", async (req, res) => {
+  try {
+    var alldata = await ingwordsi.find({});
+    console.log("Question: " + alldata);
+    res.status(201).send(alldata);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+app.post("/ingwordsi/score", async (req, res) => {
+  try {
+    var data = req.body;
+    var token = req.cookies.BuildCommunication;
+    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
+    // console.log(user_id);
+    var user = await User.findById(user_id._id);
+
+    var userData = await User.findByIdAndUpdate(user_id._id, {
+      ingwordsi: {
+        previous: user.ingwordsi ? user.ingwordsi.score : 0,
         score: data.score,
         date: data.date,
       },
