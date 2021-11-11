@@ -40,7 +40,8 @@ app.use(cookieParser());
 app.use("/images", express.static("images"));
 
 app.get("/", (req, res) => {
-  res.send("Hello from backend");
+  res.send(res.cookie.BuildCommunication);
+  console.log(res.cookie.BuildCommunication);
 });
 
 // get user details
