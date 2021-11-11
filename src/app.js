@@ -19,10 +19,17 @@ const bcrypt = require("bcryptjs");
 const app = express();
 const jwt = require("jsonwebtoken");
 const PORT = process.env.PORT || 5000;
+
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://buildcommunication.netlify.app"
+  );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
@@ -81,6 +88,7 @@ app.post("/user/signup", async (req, res) => {
     res.cookie("BuildCommunication", token, {
       expires: new Date(Date.now() + 86400000),
       httpOnly: true,
+      sameSite: "none",
       secure: true,
     });
     const userData = {
@@ -111,6 +119,7 @@ app.post("/user/login", async (req, res) => {
       expires: new Date(Date.now() + 86400000),
       httpOnly: true,
       secure: true,
+      sameSite: "none",
     });
     // console.log(cookie);
     console.log("token part is" + token);
