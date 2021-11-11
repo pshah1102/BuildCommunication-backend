@@ -4,8 +4,6 @@ var cors = require("cors");
 require("./db/conn");
 require("./mail/mail");
 const User = require("./models/users");
-const module2 = require("./models/module2");
-const module1 = require("./models/module");
 const chwords = require("./models/ch_words");
 const thwords = require("./models/th_words");
 const ingwords = require("./models/ing_words");
@@ -21,19 +19,6 @@ const app = express();
 const jwt = require("jsonwebtoken");
 const PORT = process.env.PORT || 5000;
 
-// app.use(function (req, res, next) {
-//   res.setHeader(
-//     "Access-Control-Allow-Origin",
-//     "https://buildcommunication.netlify.app"
-//   );
-//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   res.setHeader("Access-Control-Allow-Credentials", true);
-//   next();
-// });
 var corsOptions = {
   origin: "https://buildcommunication.netlify.app", //frontend url
   credentials: true,
@@ -85,8 +70,12 @@ app.post("/user/signup", async (req, res) => {
       email: req.body.email,
       dob: req.body.dob,
       password: req.body.password,
-      module1: { previous: 0, score: 0 },
-      module2: { previous: 0, score: 0 },
+      chwords: { previous: 0, score: 0 },
+      chwordsi: { previous: 0, score: 0 },
+      thwords: { previous: 0, score: 0 },
+      thwordsi: { previous: 0, score: 0 },
+      ingwords: { previous: 0, score: 0 },
+      ingwordsi: { previous: 0, score: 0 },
       module3: { previous: 0, score: 0 },
       module4: { previous: 0, score: 0 },
     });
@@ -157,7 +146,7 @@ app.get("/user/logout/:token", async (req, res) => {
     user.tokens = user.tokens.filter((currToken) => {
       return currToken.token !== token;
     });
-    // res.clearCookie("BuildCommunication");
+    res.clearCookie("BuildCommunication");
     await user.save();
     res.status(200).send("Successfully logged out");
   } catch (err) {
@@ -333,60 +322,7 @@ app.post("/ingwords/score", async (req, res) => {
   }
 });
 
-//apis for module 2
-app.post("/module2/add", async (req, res) => {
-  try {
-    console.log(req.body);
-    const moduledata = new module2({
-      question: req.body.question,
-      options: req.body.options,
-      answer: req.body.answer,
-      image: req.body.image,
-    });
-    console.log("module data is :" + moduledata);
-    const registered = await moduledata.save();
-    res.status(201).send(req.body);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-//to retrieve questions from database
-app.get("/module2/get", async (req, res) => {
-  try {
-    var alldata = await module2.find({});
-    console.log("Question: " + alldata);
-    res.status(201).send(alldata);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-// set score of module 2
-app.post("/module2/score", async (req, res) => {
-  try {
-    var data = req.body;
-    var token = req.cookies.BuildCommunication;
-    var user_id = await jwt.verify(token, process.env.SECRET_KEY);
-    // console.log(user_id);
-    var user = await User.findById(user_id._id);
-
-    var userData = await User.findByIdAndUpdate(user_id._id, {
-      module2: {
-        previous: user.module2 ? user.module2.score : 0,
-        score: data.score,
-        date: data.date,
-      },
-    });
-
-    res.status(201).send(userData);
-  } catch (err) {
-    console.log(err);
-    res.status(400).send(err);
-  }
-});
-
-// ch words typ 2
+// ch words type 2
 app.post("/chwordsi/add", async (req, res) => {
   try {
     console.log(req.body);
@@ -437,7 +373,7 @@ app.post("/chwordsi/score", async (req, res) => {
   }
 });
 
-// th words typ 2
+// th words type 2
 app.post("/thwordsi/add", async (req, res) => {
   try {
     console.log(req.body);
@@ -488,7 +424,7 @@ app.post("/thwordsi/score", async (req, res) => {
   }
 });
 
-// ing words typ 2
+// ing words type 2
 app.post("/ingwordsi/add", async (req, res) => {
   try {
     console.log(req.body);

@@ -50,17 +50,17 @@ const userschema = new mongoose.Schema({
   speech_rate: {
     type: String,
   },
-  module1: {
-    score: {
-      type: Number,
-    },
-    previous: {
-      type: Number,
-    },
-    date: {
-      type: Date,
-    },
-  },
+  // module1: {
+  //   score: {
+  //     type: Number,
+  //   },
+  //   previous: {
+  //     type: Number,
+  //   },
+  //   date: {
+  //     type: Date,
+  //   },
+  // },
   chwords: {
     score: {
       type: Number,
@@ -94,7 +94,40 @@ const userschema = new mongoose.Schema({
       type: Date,
     },
   },
-  module2: {
+  // module2: {
+  //   score: {
+  //     type: Number,
+  //   },
+  //   previous: {
+  //     type: Number,
+  //   },
+  //   date: {
+  //     type: Date,
+  //   },
+  // },
+  chwordsi: {
+    score: {
+      type: Number,
+    },
+    previous: {
+      type: Number,
+    },
+    date: {
+      type: Date,
+    },
+  },
+  thwordsi: {
+    score: {
+      type: Number,
+    },
+    previous: {
+      type: Number,
+    },
+    date: {
+      type: Date,
+    },
+  },
+  ingwordsi: {
     score: {
       type: Number,
     },
