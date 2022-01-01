@@ -70,6 +70,7 @@ app.post("/user/signup", async (req, res) => {
       email: req.body.email,
       dob: req.body.dob,
       password: req.body.password,
+      speech_rate: req.body.speech_rate,
       chwords: { previous: 0, score: 0 },
       chwordsi: { previous: 0, score: 0 },
       thwords: { previous: 0, score: 0 },
